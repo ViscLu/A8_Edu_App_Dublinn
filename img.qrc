@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/ArtAssert">
+        <file>EduApp_GameStartScreen.png</file>
+        <file>StartScreen_QuitLogo.png</file>
+        <file>StartScreen_StartLogo.png</file>
+        <file>StartScreen_CookLogo.png</file>
+        <file>EduApp_GameRecipeScreen.png</file>
+        <file>Recipe_KungPaoChicken.png</file>
+        <file>EduApp_GameMainRoomBackground.png</file>
+        <file>MainGameScreen_CardBox.png</file>
+        <file>MainGameScreen_CuttingBoardArea.png</file>
+        <file>MainGameScreen_PrepSinkArea.png</file>
+        <file>MainGameScreen_StoveArea.png</file>
+        <file>potato_card.png</file>
+        <file>chiliCard.png</file>
+        <file>garlicCard.png</file>
+        <file>gingerCard.png</file>
+        <file>green_onion_piecesCard.png</file>
+        <file>green_onionCard.png</file>
+        <file>peanutsCard.png</file>
+        <file>raw_chicken_brisketsCard.png</file>
+        <file>raw_chickenCard.png</file>
+        <file>saltCard.png</file>
+        <file>soy_sauceCard.png</file>
+    </qresource>
+</RCC>
