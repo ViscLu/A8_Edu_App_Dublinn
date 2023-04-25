@@ -13,13 +13,15 @@ SOURCES += \
     foodcard.cpp \
     main.cpp \
     cookmaingameroom.cpp \
-    model.cpp
+    model.cpp \
+    recipedata.cpp
 
 HEADERS += \
     cookarea.h \
     cookmaingameroom.h \
     foodcard.h \
-    model.h
+    model.h \
+    recipedata.h
 
 FORMS += \
     cookmaingameroom.ui
@@ -31,3 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     img.qrc
+
+DISTFILES +=

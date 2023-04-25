@@ -13,6 +13,7 @@
 #include <QTimer>
 #include "foodcard.h"
 #include "cookarea.h"
+#include "model.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CookMainGameRoom; }
@@ -23,16 +24,19 @@ class CookMainGameRoom : public QMainWindow
     Q_OBJECT
 
 public:
-    CookMainGameRoom(QWidget *parent = nullptr);
+    CookMainGameRoom(Model& model, QWidget *parent = nullptr);
     ~CookMainGameRoom();
 
 private slots:
-
-
-signals:
     void enterRecipeLevel();
     void enterMainGameLevel();
     void checkCollision();
+    void addNewCard(QPoint pos, QString foodName, QString path);
+    void OpenFile();
+
+signals:
+    void sendCollisionItems(QList<QString>);
+    void readFileForOpen(QString filename);
 
 
 private:
@@ -52,6 +56,6 @@ private:
 
     QList<FoodCard*> foodCardsList;
     QList<CookArea*> CookAreasList;
-
+    QList<QString> collisionItems;
 };
 #endif // COOKMAINGAMEROOM_H

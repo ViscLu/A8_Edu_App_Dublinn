@@ -13,12 +13,13 @@ class FoodCard : public QGraphicsPixmapItem
 
 public:
     explicit FoodCard(QObject *parent = nullptr);
-    FoodCard(QPoint pos, QString foodName, QPixmap pixmap);
+    FoodCard(QPoint pos, QString foodName, QString pathName);
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void resetCardPos();
+    QString GetFoodCardName();
 
     bool checkRelease;
 

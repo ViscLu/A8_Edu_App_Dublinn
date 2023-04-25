@@ -1,7 +1,7 @@
 #include "cookmaingameroom.h"
 #include "ui_cookmaingameroom.h"
 
-CookMainGameRoom::CookMainGameRoom(QWidget *parent)
+CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::CookMainGameRoom)
 {
@@ -79,27 +79,44 @@ CookMainGameRoom::CookMainGameRoom(QWidget *parent)
     cardBox->move(174, 780);
     cardBox->setStyleSheet("background-color: transparent;");
 
-    FoodCard* potatoCard = new FoodCard(QPoint(266,819),QString("potato"), QPixmap(":/ArtAssert/potato_card.png"));
-    foodCardsList.push_back(potatoCard);
+    auto recipeBox = new QToolButton();
+    recipeBox->resize(434, 438);
+    recipeBox->setIcon(QIcon(":/ArtAssert/Recipe_KungPaoChicken_Step.png"));
+    recipeBox->setIconSize(QSize(434, 438));
+    recipeBox->move(1465, 20);
+    recipeBox->setStyleSheet("background-color: transparent;");
+
+    //FoodCard* rawChickenBrisketsCard = new FoodCard(QPoint(266,819),QString("raw_chicken_brisketsCard"), ":/ArtAssert/raw_chicken_brisketsCard.png");
+    //* garlicCard = new FoodCard(QPoint(366, 819), QString("garlic"), ":/ArtAssert/garlicCard.png");
+
+    //foodCardsList.push_back(rawChickenBrisketsCard);
+    //foodCardsList.push_back(garlicCard);
 
     mMainGameScene.addItem(&mBackGround3);
     mMainGameScene.addItem(prepSink);
     mMainGameScene.addItem(cuttingBoard);
     mMainGameScene.addItem(stove);
     mMainGameScene.addWidget(cardBox);
-    mMainGameScene.addItem(potatoCard);
+    mMainGameScene.addWidget(recipeBox);
+    //mMainGameScene.addItem(rawChickenBrisketsCard);
+    //mMainGameScene.addItem(garlicCard);
 
-//    mMainGameScene.addWidget(prepSinkArea);
+//  mMainGameScene.addWidget(prepSinkArea);
 
     connect(startButton, &QPushButton::clicked, this, &CookMainGameRoom::enterRecipeLevel);
+    //connect(startButton, &QPushButton::clicked, &model, &Model::openGameData);
+    connect(startButton, &QPushButton::clicked, this, &CookMainGameRoom::OpenFile);
+    connect(this, &CookMainGameRoom::readFileForOpen, &model, &Model::openGameData);
+
     connect(kungBaoChickenLogo, &QToolButton::clicked, this, &CookMainGameRoom::enterMainGameLevel);
+    connect(this, &CookMainGameRoom::sendCollisionItems, &model, &Model::checkCardCollision);
+    connect(&model, &Model::dealNewCard, this, &CookMainGameRoom::addNewCard);
     //connect(this, QMouseEvent::MouseButtonRelease, this, &CookMainGameRoom::checkCollision);
 
     // start card game timer
     gameLoopTimer = new QTimer(this);
     gameLoopTimer->start(10);
     connect(gameLoopTimer, &QTimer::timeout, this, &CookMainGameRoom::checkCollision);
-
 
     mStartScene.addItem(&mBackGround1);
     ui->mGameView->setScene(&mStartScene);
@@ -123,6 +140,22 @@ void CookMainGameRoom::enterMainGameLevel(){
     ui->mGameView->setScene(&mMainGameScene);
 }
 
+void CookMainGameRoom::addNewCard(QPoint pos, QString foodName, QString path){
+    if(pos.x()> 1666){
+        int initX = 266;
+        for(int i = 0; i <foodCardsList.size(); i++){
+            foodCardsList[i]->setPos(initX+100*i, 819);
+        }
+        FoodCard *newCard = new FoodCard(QPoint(initX+100*foodCardsList.size(),819), QString(foodName), QString(path));
+        foodCardsList.push_back(newCard);
+        mMainGameScene.addItem(newCard);
+    }else{
+        FoodCard *newCard = new FoodCard(QPoint(pos), QString(foodName), QString(path));
+        foodCardsList.push_back(newCard);
+        mMainGameScene.addItem(newCard);
+    }
+}
+
 void CookMainGameRoom::collision(){
     bool checkRemoveCard = false;
     for(int j = 0; j < foodCardsList.size(); j++){
@@ -130,10 +163,13 @@ void CookMainGameRoom::collision(){
             int cardIndex = j;
             for(int i = 0; i < CookAreasList.size(); i++){
                 if(foodCardsList[cardIndex]->collidesWithItem(CookAreasList[i])){
-                    qDebug() <<"collision happen";
-                    mMainGameScene.removeItem(foodCardsList[cardIndex]);
-                    foodCardsList.removeOne(foodCardsList[cardIndex]);
+                    qDebug() <<"collision happen: " << j << i;
+                    QList<QString> collisionItems {CookAreasList[i]->getAreaType(), foodCardsList[cardIndex]->GetFoodCardName()};
+                    emit sendCollisionItems(collisionItems);
+                    mMainGameScene.removeItem(foodCardsList[j]);
+                    foodCardsList.removeOne(foodCardsList[j]);
                     checkRemoveCard = true;
+                    break;
                 }
             }
             if(checkRemoveCard == false){
@@ -141,6 +177,15 @@ void CookMainGameRoom::collision(){
             }
         }
     }
+}
+
+void CookMainGameRoom::OpenFile(){
+    QString filename= QFileDialog::getOpenFileName(this, "Choose File");
+
+    if(filename.isEmpty())
+        return;
+
+    emit readFileForOpen(filename);
 }
 
 

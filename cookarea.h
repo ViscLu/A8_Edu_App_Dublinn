@@ -18,6 +18,7 @@ public:
 
 private:
     QString areaType;
+
 };
 
 #endif // COOKAREA_H

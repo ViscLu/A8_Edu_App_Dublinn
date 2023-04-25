@@ -5,11 +5,11 @@ FoodCard::FoodCard(QObject *parent)
 {
 }
 
-FoodCard::FoodCard(QPoint pos, QString foodName, QPixmap pixmap){
+FoodCard::FoodCard(QPoint pos, QString foodName, QString pathName){
     cardPos = pos;
     foodCardName = foodName;
     this->setPos(pos);
-    this->setPixmap(pixmap);
+    this->setPixmap(QPixmap(pathName));
     checkRelease = false;
 }
 
@@ -33,6 +33,10 @@ void FoodCard::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void FoodCard::resetCardPos(){
     this->setPos(cardPos);
+}
+
+QString FoodCard::GetFoodCardName(){
+    return foodCardName;
 }
 
 //void FoodCard::keyPressEvent(QKeyEvent *event)

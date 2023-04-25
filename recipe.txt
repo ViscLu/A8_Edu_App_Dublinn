@@ -1,0 +1,7 @@
+{
+	"cardCount": "1",
+    	"recipePixmapPath": ":/ArtAssert/Recipe_KungPaoChicken_Step.png",
+    	"passedLevel": "false",
+	"foodCardsData": [["chiliCard",":/ArtAssert/chiliCard.png"],["garlicCard",":/ArtAssert/garlicCard.png"]],
+	"recipeCookOrder": ["chiliCard","garlicCard"]
+}

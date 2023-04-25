@@ -5,7 +5,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    CookMainGameRoom w;
+    Model model;
+    CookMainGameRoom w(model);
     w.show();
     return a.exec();
 }
