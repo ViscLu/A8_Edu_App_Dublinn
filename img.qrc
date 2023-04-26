@@ -11,7 +11,6 @@
         <file>MainGameScreen_CuttingBoardArea.png</file>
         <file>MainGameScreen_PrepSinkArea.png</file>
         <file>MainGameScreen_StoveArea.png</file>
-        <file>potato_card.png</file>
         <file>chiliCard.png</file>
         <file>garlicCard.png</file>
         <file>gingerCard.png</file>
@@ -28,8 +27,45 @@
         <file>oilCard.png</file>
         <file>sugarCard.png</file>
         <file>Recipe_KungPaoChicken_Step.png</file>
-        <file>Recipe.ssp</file>
         <file>raw_chickenCard_water.png</file>
         <file>green_onionCard_water.png</file>
+        <file>KungPaoChickenCard.png</file>
+        <file>recipe.txt</file>
+        <file>Recipe_TomatoAndEggStirFry.png</file>
+        <file>Recipe_FoodDropGame.png</file>
+        <file>eggCard.png</file>
+        <file>eggCard_water.png</file>
+        <file>eggCard_whisked.png</file>
+        <file>tomatoCard.png</file>
+        <file>tomatoCard_diced.png</file>
+        <file>tomatoCard_water.png</file>
+        <file>Recipe_TomatoAndEggStirFry_Step.png</file>
+        <file>TomatoAndEggStirFryCard.png</file>
+        <file>eggCard_scrambled.png</file>
+        <file>recipeKungBaoChicken.txt</file>
+        <file>recipeTomatoAndEggStirFry.txt</file>
+        <file>beef_cubesCard_boiled.png</file>
+        <file>BeefStewWithPotatoesCard.png</file>
+        <file>potato_dicedCard.png</file>
+        <file>potato_dicedCard_fried.png</file>
+        <file>raw_beef_cubesCard.png</file>
+        <file>raw_beefCard.png</file>
+        <file>SoyBean_sauceCard.png</file>
+        <file>star_aniseCard.png</file>
+        <file>potatoCard.png</file>
+        <file>Recipe_BeefStewWithPotatoes_Step.png</file>
+        <file>waterCard.png</file>
+        <file>potatoCard_water.png</file>
+        <file>raw_beefCard_water.png</file>
+        <file>Recipe_BeefStewWithPotatoes.png</file>
+        <file>recipeBeefStewWithPotatoes.txt</file>
+        <file>GameMainRoom_GameMenu_Background.png</file>
+        <file>GameMenu_BackButton.png</file>
+        <file>GameMenu_RestartButton.png</file>
+        <file>openMenuButton.png</file>
+        <file>charredFoodCard.png</file>
+        <file>cutCard.png</file>
+        <file>washCard.png</file>
+        <file>recipeMenuButton.png</file>
     </qresource>
 </RCC>

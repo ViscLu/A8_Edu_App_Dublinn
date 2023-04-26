@@ -20,13 +20,11 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void resetCardPos();
     QString GetFoodCardName();
+    void setCardPos(QPoint pos);
 
     bool checkRelease;
 
-    //void keyPressEvent(QKeyEvent *event);
-
 signals:
-    //void mouseReleased(bool check);
 
 public slots:
 

@@ -1,0 +1,9 @@
+{
+	"cardCount": "10",
+   	"recipePixmapPath": ":/ArtAssert/Recipe_BeefStewWithPotatoes_Step.png",
+    	"passedLevel": "false",
+   	"dishCardPixmapPath": ":/ArtAssert/BeefStewWithPotatoesCard.png",
+    	"foodCardsData": 										[["raw_beefCard",":/ArtAssert/raw_beefCard.png"],["SoyBean_sauceCard",":/ArtAssert/SoyBean_sauceCard.png"],["waterCard",":/ArtAssert/waterCard.png"],["green_onionCard",":/ArtAssert/green_onionCard.png"],["saltCard",":/ArtAssert/saltCard.png"],["soy_sauceCard",":/ArtAssert/soy_sauceCard.png"],["gingerCard",":/ArtAssert/gingerCard.png"], ["oilCard",":/ArtAssert/oilCard.png"],["star_aniseCard",":/ArtAssert/star_aniseCard.png"],["potatoCard",":/ArtAssert/potatoCard.png"]],
+   	"recipeCookOrder": ["oilCard","green_onion_piecesCard","gingerCard","star_aniseCard","beef_cubesCard_boiled","SoyBean_sauceCard","waterCard","soy_sauceCard","saltCard","potato_dicedCard_fried"]
+}
+

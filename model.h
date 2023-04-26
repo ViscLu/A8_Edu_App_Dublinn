@@ -9,12 +9,8 @@
 #include <QJsonObject>
 #include <QFile>
 #include <QJsonArray>
-#include <QFile>
-#include <QJsonDocument>
-#include <QJsonValue>
 #include <QFileDialog>
-#include <QPainter>
-#include<QResource>
+#include <QMap>
 
 class Model : public QObject
 {
@@ -24,15 +20,25 @@ public:
 
 signals:
     void dealNewCard(QPoint pos, QString foodName, QString path);
+    void initRecipeStepBoard(QString recipeStepPath);
+    void finishCurrLevel(QString dishPixmapPath);
 
 public slots:
     void checkCardCollision(QList<QString> collisionList);
-    void openGameData(QString filename);
+    void openGameData(QList<QString> filenames);
+    void resetMainGameLevelHandler();
+    void initMainGameRoomBaseOnSelectedRecipe(QString recipeName);
+    void restartGameRoomHandler();
 
 private:
-    QList<QList<QString>> cardsData;
-    QList<QString> RecipeCookOrde;
+    QList<QList<QString>> foodCardsData;
+    QList<QString> RecipeCookOrder;
     QList<RecipeData> recipeDataList;
+    QMap<QString, RecipeData> recipeDataMap;
+    QString currDishName;
+    QString currDishPixmapPath;
+    QString currRecipeStepBoard;
+
     int cardsCount;
     int cardYInitPos;
     int cardXInitPos;
@@ -45,5 +51,4 @@ private:
     void sinkProcessing(QString cardName);
     void cuttingBoardProcessing(QString cardName);
 };
-
 #endif // MODEL_H

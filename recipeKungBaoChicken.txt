@@ -1,0 +1,8 @@
+{
+	"cardCount": "10",
+   	"recipePixmapPath": ":/ArtAssert/Recipe_KungPaoChicken_Step.png",
+    	"passedLevel": "false",
+   	"dishCardPixmapPath": ":/ArtAssert/KungPaoChickenCard.png",
+    	"foodCardsData": 										[["raw_chickenCard",":/ArtAssert/raw_chickenCard.png"],["chiliCard",":/ArtAssert/chiliCard.png"],["garlicCard",":/ArtAssert/garlicCard.png"],["green_onionCard",":/ArtAssert/green_onionCard.png"],["saltCard",":/ArtAssert/saltCard.png"],["soy_sauceCard",":/ArtAssert/soy_sauceCard.png"],["gingerCard",":/ArtAssert/gingerCard.png"], ["oilCard",":/ArtAssert/oilCard.png"],["cookWineCard",":/ArtAssert/cookWineCard.png"],["peanutsCard",":/ArtAssert/peanutsCard.png"]],
+   	"recipeCookOrder": ["oilCard","green_onion_piecesCard","gingerCard","chiliCard","garlicCard","raw_chicken_brisketsCard","cookWineCard","soy_sauceCard","saltCard","peanutsCard"]
+}

@@ -6,8 +6,6 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     , ui(new Ui::CookMainGameRoom)
 {
     ui->setupUi(this);
-    //mGameView.setSceneRect(QRect(0,0,1920, 1080));
-    //mRecipeScene.setSceneRect(QRect(0,0,1920, 1080));
 
     // game start screen
     mStartScene.setSceneRect(QRect(0,0,1920, 1080));  // set QGraphicsScene size
@@ -52,26 +50,43 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     kungBaoChickenLogo->move(105, 230);
     kungBaoChickenLogo->setStyleSheet("background-color: transparent;");
 
+    auto tomatoAndEggStirFryLogo = new QToolButton();
+    tomatoAndEggStirFryLogo->resize(379, 114);
+    tomatoAndEggStirFryLogo->setIcon(QIcon(":/ArtAssert/Recipe_TomatoAndEggStirFry.png"));
+    tomatoAndEggStirFryLogo->setIconSize(QSize(379, 114));
+    tomatoAndEggStirFryLogo->move(555, 230);
+    tomatoAndEggStirFryLogo->setStyleSheet("background-color: transparent;");
+
+    auto beefStewWithPotatoesLogo = new QToolButton();
+    beefStewWithPotatoesLogo->resize(379, 114);
+    beefStewWithPotatoesLogo->setIcon(QIcon(":/ArtAssert/Recipe_BeefStewWithPotatoes.png"));
+    beefStewWithPotatoesLogo->setIconSize(QSize(379, 114));
+    beefStewWithPotatoesLogo->move(1005, 230);
+    beefStewWithPotatoesLogo->setStyleSheet("background-color: transparent;");
+
+    auto foodDropGameLogo = new QToolButton();
+    foodDropGameLogo->setText("kungBaoChicken");
+    foodDropGameLogo->resize(379, 114);
+    foodDropGameLogo->setIcon(QIcon(":/ArtAssert/Recipe_FoodDropGame.png"));
+    foodDropGameLogo->setIconSize(QSize(379, 114));
+    foodDropGameLogo->move(1455, 230);
+    foodDropGameLogo->setStyleSheet("background-color: transparent;");
+
     mRecipeScene.addItem(&mBackGround2);
     mRecipeScene.addWidget(kungBaoChickenLogo);
+    mRecipeScene.addWidget(tomatoAndEggStirFryLogo);
+    mRecipeScene.addWidget(beefStewWithPotatoesLogo);
+    mRecipeScene.addWidget(foodDropGameLogo);
 
     // main game screen
     mMainGameScene.setSceneRect(QRect(0,0,1920,1080));
     mBackGround3.setPixmap(QPixmap(":/ArtAssert/EduApp_GameMainRoomBackground.png"));
-    CookArea* prepSink = new CookArea(QPoint(352,429), QString("prepSink"), QPixmap(":/ArtAssert/MainGameScreen_PrepSinkArea.png"));
-    CookArea* cuttingBoard = new CookArea(QPoint(1265, 468), QString("cuttingBoard"), QPixmap(":/ArtAssert/MainGameScreen_CuttingBoardArea.png"));
-    CookArea* stove = new CookArea(QPoint(809,370), QString("stove"), QPixmap(":/ArtAssert/MainGameScreen_StoveArea.png"));
+    CookArea* prepSink = new CookArea(QPoint(352,409), QString("prepSink"), QPixmap(":/ArtAssert/MainGameScreen_PrepSinkArea.png"));
+    CookArea* cuttingBoard = new CookArea(QPoint(1265, 448), QString("cuttingBoard"), QPixmap(":/ArtAssert/MainGameScreen_CuttingBoardArea.png"));
+    CookArea* stove = new CookArea(QPoint(809,350), QString("stove"), QPixmap(":/ArtAssert/MainGameScreen_StoveArea.png"));
     CookAreasList.push_back(prepSink);
     CookAreasList.push_back(cuttingBoard);
     CookAreasList.push_back(stove);
-
-
-//    auto prepSinkArea = new QToolButton();
-//    prepSinkArea->resize(420, 384);
-//    prepSinkArea->setIcon(QIcon(":/ArtAssert/MainGameScreen_PrepSinkArea.png"));
-//    prepSinkArea->setIconSize(QSize(420, 384));
-//    prepSinkArea->move(330, 473);
-//    prepSinkArea->setStyleSheet("background-color: transparent;");
 
     auto cardBox = new QLabel();
     cardBox->resize(1696, 290);
@@ -79,39 +94,40 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     cardBox->move(174, 780);
     cardBox->setStyleSheet("background-color: transparent;");
 
-    auto recipeBox = new QToolButton();
-    recipeBox->resize(434, 438);
-    recipeBox->setIcon(QIcon(":/ArtAssert/Recipe_KungPaoChicken_Step.png"));
-    recipeBox->setIconSize(QSize(434, 438));
-    recipeBox->move(1465, 20);
-    recipeBox->setStyleSheet("background-color: transparent;");
-
-    //FoodCard* rawChickenBrisketsCard = new FoodCard(QPoint(266,819),QString("raw_chicken_brisketsCard"), ":/ArtAssert/raw_chicken_brisketsCard.png");
-    //* garlicCard = new FoodCard(QPoint(366, 819), QString("garlic"), ":/ArtAssert/garlicCard.png");
-
-    //foodCardsList.push_back(rawChickenBrisketsCard);
-    //foodCardsList.push_back(garlicCard);
+    auto openMenuLogo = new QPushButton();
+    openMenuLogo->resize(231, 76);
+    openMenuLogo->setIcon(QIcon(":/ArtAssert/openMenuButton.png"));
+    openMenuLogo->setIconSize(QSize(231, 76));
+    openMenuLogo->move(40, 39);
+    openMenuLogo->setStyleSheet("background-color: transparent;");
 
     mMainGameScene.addItem(&mBackGround3);
     mMainGameScene.addItem(prepSink);
     mMainGameScene.addItem(cuttingBoard);
     mMainGameScene.addItem(stove);
     mMainGameScene.addWidget(cardBox);
-    mMainGameScene.addWidget(recipeBox);
-    //mMainGameScene.addItem(rawChickenBrisketsCard);
-    //mMainGameScene.addItem(garlicCard);
+    mMainGameScene.addWidget(openMenuLogo);
 
-//  mMainGameScene.addWidget(prepSinkArea);
+    connect(openMenuLogo, &QPushButton::clicked, this, &CookMainGameRoom::openGameMenu);
+    connect(&gameMenuWindow, &GameMenu::restartMainGameRoom, this, &CookMainGameRoom::restartGameRoom);
+    connect(&gameMenuWindow, &GameMenu::backToRecipeLevel, this, &CookMainGameRoom::backToRecipeLevelAndClearGameLevel);
 
     connect(startButton, &QPushButton::clicked, this, &CookMainGameRoom::enterRecipeLevel);
-    //connect(startButton, &QPushButton::clicked, &model, &Model::openGameData);
     connect(startButton, &QPushButton::clicked, this, &CookMainGameRoom::OpenFile);
     connect(this, &CookMainGameRoom::readFileForOpen, &model, &Model::openGameData);
 
-    connect(kungBaoChickenLogo, &QToolButton::clicked, this, &CookMainGameRoom::enterMainGameLevel);
+    connect(kungBaoChickenLogo, &QToolButton::clicked, this, &CookMainGameRoom::enterMainGameLevelKungBaoChicken);
+    connect(tomatoAndEggStirFryLogo, &QPushButton::clicked, this, &CookMainGameRoom::enterMainGameLevelTomatoAndEggStirFry);
+    connect(beefStewWithPotatoesLogo, &QPushButton::clicked, this, &CookMainGameRoom::enterMainGameLevelBeefStewWithPotatoes);
+    connect(foodDropGameLogo, &QPushButton::clicked, this, &CookMainGameRoom::enterFoodDropGameRoom);
+
+    connect(this, &CookMainGameRoom::setupMainGameLevel, &model, &Model::initMainGameRoomBaseOnSelectedRecipe);
+
     connect(this, &CookMainGameRoom::sendCollisionItems, &model, &Model::checkCardCollision);
+    connect(this, &CookMainGameRoom::restartGameRoomRequest, &model, &Model::restartGameRoomHandler);
     connect(&model, &Model::dealNewCard, this, &CookMainGameRoom::addNewCard);
-    //connect(this, QMouseEvent::MouseButtonRelease, this, &CookMainGameRoom::checkCollision);
+    connect(&model, &Model::initRecipeStepBoard, this, &CookMainGameRoom::addNewRecipeStep);
+    connect(&model, &Model::finishCurrLevel, this, &CookMainGameRoom::showDishCard);
 
     // start card game timer
     gameLoopTimer = new QTimer(this);
@@ -136,15 +152,30 @@ void CookMainGameRoom::enterRecipeLevel(){
     ui->mGameView->setScene(&mRecipeScene);
 }
 
-void CookMainGameRoom::enterMainGameLevel(){
+void CookMainGameRoom::enterMainGameLevelKungBaoChicken(){
+    currRecipe = "KungBaoChicken";
     ui->mGameView->setScene(&mMainGameScene);
+    emit setupMainGameLevel("currRecipe");
+}
+
+void CookMainGameRoom::enterMainGameLevelTomatoAndEggStirFry(){
+    currRecipe = "TomatoAndEggStirFry";
+    ui->mGameView->setScene(&mMainGameScene);
+    emit setupMainGameLevel("TomatoAndEggStirFry");
+}
+
+void CookMainGameRoom::enterMainGameLevelBeefStewWithPotatoes()
+{
+    currRecipe = "BeefStewWithPotatoes";
+    ui->mGameView->setScene(&mMainGameScene);
+    emit setupMainGameLevel("BeefStewWithPotatoes");
 }
 
 void CookMainGameRoom::addNewCard(QPoint pos, QString foodName, QString path){
     if(pos.x()> 1666){
         int initX = 266;
         for(int i = 0; i <foodCardsList.size(); i++){
-            foodCardsList[i]->setPos(initX+100*i, 819);
+            foodCardsList[i]->setCardPos(QPoint(initX+100*i, 819));
         }
         FoodCard *newCard = new FoodCard(QPoint(initX+100*foodCardsList.size(),819), QString(foodName), QString(path));
         foodCardsList.push_back(newCard);
@@ -169,6 +200,7 @@ void CookMainGameRoom::collision(){
                     mMainGameScene.removeItem(foodCardsList[j]);
                     foodCardsList.removeOne(foodCardsList[j]);
                     checkRemoveCard = true;
+                    //delete foodCardsList[j];
                     break;
                 }
             }
@@ -180,12 +212,80 @@ void CookMainGameRoom::collision(){
 }
 
 void CookMainGameRoom::OpenFile(){
-    QString filename= QFileDialog::getOpenFileName(this, "Choose File");
+    QList<QString> filenames;
+    //QString filename= QFileDialog::getOpenFileName(this, "Choose File");
 
-    if(filename.isEmpty())
+    QString filename1 = ":/ArtAssert/recipeKungBaoChicken.txt";
+    QString filename2 = ":/ArtAssert/recipeTomatoAndEggStirFry.txt";
+    QString filename3 = ":/ArtAssert/recipeBeefStewWithPotatoes.txt";
+
+    if(filename1.isEmpty() || filename2.isEmpty())
         return;
 
-    emit readFileForOpen(filename);
+    filenames.push_back(filename1);
+    filenames.push_back(filename2);
+    filenames.push_back(filename3);
+    emit readFileForOpen(filenames);
 }
 
+void CookMainGameRoom::backToRecipeLevelAndClearGameLevel(){
+    int foodCardsListNumber = foodCardsList.size() - 1;
+    for(int index = foodCardsListNumber; index >= 0; index--){
+        qDebug() << "check remove" << foodCardsList[index]->GetFoodCardName();
+        mMainGameScene.removeItem(foodCardsList[index]);
+        foodCardsList.pop_back();
+    }
+    ui->mGameView->setScene(&mRecipeScene);
+    emit resetMainGameLevel();
+}
+
+void CookMainGameRoom::addNewRecipeStep(QString recipeStepPixmap)
+{
+    auto recipeBox = new QToolButton();
+    recipeBox->resize(434, 438);
+
+    recipeBox->setIcon(QIcon(recipeStepPixmap));
+    recipeBox->setIconSize(QSize(434, 438));
+    recipeBox->move(1465, 20);
+    recipeBox->setStyleSheet("background-color: transparent;");
+    mMainGameScene.addWidget(recipeBox);
+}
+
+void CookMainGameRoom::showDishCard(QString dishPixmapPath){
+    auto newDishCard = new QPushButton();
+    newDishCard->resize(349, 492);
+    qDebug() << dishPixmapPath;
+    newDishCard->setIcon(QIcon(dishPixmapPath));
+    newDishCard->setIconSize(QSize(349, 492));
+    newDishCard->move(845,222);
+    newDishCard->setStyleSheet("background-color: transparent;");
+
+    mMainGameScene.addWidget(newDishCard);
+    connect(newDishCard, &QPushButton::clicked, this, &CookMainGameRoom::backToRecipeLevelAndClearGameLevel);
+    connect(newDishCard, &QPushButton::clicked, newDishCard, &QPushButton::close);
+}
+
+void CookMainGameRoom::openGameMenu()
+{
+    gameMenuWindow.show();
+}
+
+void CookMainGameRoom::restartGameRoom()
+{
+    qDebug() << "check foodcardList size: " << foodCardsList.size();
+    int foodCardsListNumber = foodCardsList.size() - 1;
+    for(int index = foodCardsListNumber; index >= 0; index--){
+        qDebug() << "check remove" << foodCardsList[index]->GetFoodCardName();
+        mMainGameScene.removeItem(foodCardsList[index]);
+        foodCardsList.pop_back();
+    }
+    qDebug() << "check foodcardList size: " << foodCardsList.size();
+
+    emit restartGameRoomRequest(currRecipe);
+}
+
+void CookMainGameRoom::enterFoodDropGameRoom()
+{
+    foodFallDialogWindow.show();
+}
 

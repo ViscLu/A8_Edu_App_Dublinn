@@ -1,0 +1,8 @@
+{
+	"cardCount": "8",
+   	"recipePixmapPath": ":/ArtAssert/Recipe_TomatoAndEggStirFry_Step.png",
+    	"passedLevel": "false",
+   	"dishCardPixmapPath": ":/ArtAssert/TomatoAndEggStirFryCard.png",
+    	"foodCardsData": 										[["eggCard",":/ArtAssert/eggCard.png"],["green_onionCard",":/ArtAssert/green_onionCard.png"],["saltCard",":/ArtAssert/saltCard.png"],["soy_sauceCard",":/ArtAssert/soy_sauceCard.png"],["gingerCard",":/ArtAssert/gingerCard.png"], ["oilCard",":/ArtAssert/oilCard.png"],["tomatoCard",":/ArtAssert/tomatoCard.png"],["sugarCard",":/ArtAssert/sugarCard.png"]],
+   	"recipeCookOrder": ["oilCard","green_onion_piecesCard","gingerCard","tomatoCard_diced","soy_sauceCard","saltCard","sugarCard","eggCard_scrambled"]
+}

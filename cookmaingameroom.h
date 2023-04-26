@@ -14,6 +14,9 @@
 #include "foodcard.h"
 #include "cookarea.h"
 #include "model.h"
+#include <QDialog>
+#include "gamemenu.h"
+#include "foodfalldialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CookMainGameRoom; }
@@ -29,15 +32,25 @@ public:
 
 private slots:
     void enterRecipeLevel();
-    void enterMainGameLevel();
+    void enterMainGameLevelKungBaoChicken();
+    void enterMainGameLevelTomatoAndEggStirFry();
+    void enterMainGameLevelBeefStewWithPotatoes();
     void checkCollision();
     void addNewCard(QPoint pos, QString foodName, QString path);
     void OpenFile();
+    void backToRecipeLevelAndClearGameLevel();
+    void addNewRecipeStep(QString recipeStepPixmap);
+    void showDishCard(QString dishPixmapPath);
+    void openGameMenu();
+    void restartGameRoom();
+    void enterFoodDropGameRoom();
 
 signals:
     void sendCollisionItems(QList<QString>);
-    void readFileForOpen(QString filename);
-
+    void readFileForOpen(QList<QString> filenames);
+    void resetMainGameLevel();
+    void setupMainGameLevel(QString recipeName);
+    void restartGameRoomRequest(QString recipeName);
 
 private:
     Ui::CookMainGameRoom *ui;
@@ -53,9 +66,12 @@ private:
     QTimer* gameLoopTimer;
 
     void collision();
-
+    QString currRecipe;
     QList<FoodCard*> foodCardsList;
     QList<CookArea*> CookAreasList;
     QList<QString> collisionItems;
+
+    GameMenu gameMenuWindow;
+    FoodFallDialog foodFallDialogWindow;
 };
 #endif // COOKMAINGAMEROOM_H

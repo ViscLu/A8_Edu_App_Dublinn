@@ -35,11 +35,11 @@ void FoodCard::resetCardPos(){
     this->setPos(cardPos);
 }
 
+void FoodCard::setCardPos(QPoint pos){
+    this->setPos(pos);
+    cardPos = pos;
+}
+
 QString FoodCard::GetFoodCardName(){
     return foodCardName;
 }
-
-//void FoodCard::keyPressEvent(QKeyEvent *event)
-//{
-
-//}
