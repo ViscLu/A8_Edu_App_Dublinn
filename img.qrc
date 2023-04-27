@@ -67,5 +67,9 @@
         <file>cutCard.png</file>
         <file>washCard.png</file>
         <file>recipeMenuButton.png</file>
+        <file>FoodDropGameBackground.png</file>
+        <file>FoodDropGame_dishCardButton.png</file>
+        <file>FoodDropGame_foodCardButton.png</file>
+        <file>FoodDropGame_RecipeLogoButton.png</file>
     </qresource>
 </RCC>

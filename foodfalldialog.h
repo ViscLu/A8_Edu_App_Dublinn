@@ -8,6 +8,8 @@
 #include <QTimer>
 #include <QList>
 #include <Box2D/Box2D.h>
+#include <QToolButton>
+#include <QRandomGenerator>
 
 class FoodFallDialog : public QDialog
 {
@@ -31,10 +33,18 @@ private:
     QList<QGraphicsPixmapItem *> foodItems;
     QGraphicsPixmapItem *characterItem;
     int moveDirection;
+    int currMode;
+    QList<QString> foodCardPaths;
+    QString randomSelectFoodCardLogo();
+    QString randomSelectRecipeLogo();
+    QString randomSelectDishCardLogo();
 
 private slots:
     void updateWorld();
     void mousePressEvent(QMouseEvent *event);
+    void foodCardMode();
+    void recipeMode();
+    void dishCardMode();
 };
 
 class CustomContactListener : public b2ContactListener

@@ -16,6 +16,20 @@ FoodFallDialog::FoodFallDialog(QWidget *parent) : QDialog(parent)
     b2Vec2 gravity(0.0f, -9.8f);
     world = new b2World(gravity);
     scaleFactor = 50.0f;
+    currMode = 0;
+
+    foodCardPaths.push_back(":/ArtAssert/sugarCard.png");
+    foodCardPaths.push_back(":/ArtAssert/eggCard_whisked.png");
+    foodCardPaths.push_back(":/ArtAssert/cookWineCard.png");
+    foodCardPaths.push_back(":/ArtAssert/raw_beefCard.png");
+    foodCardPaths.push_back(":/ArtAssert/green_onionCard_water.png");
+    foodCardPaths.push_back(":/ArtAssert/peanutsCard.png");
+    foodCardPaths.push_back(":/ArtAssert/tomatoCard.png");
+    foodCardPaths.push_back(":/ArtAssert/garlicCard.png");
+    foodCardPaths.push_back(":/ArtAssert/oilCard.png");
+    foodCardPaths.push_back(":/ArtAssert/raw_chicken_brisketsCard.png");
+    foodCardPaths.push_back(":/ArtAssert/washCard.png");
+    foodCardPaths.push_back(":/ArtAssert/cutCard.png");
 
     int fixedWidth = 1920;
     int fixedHeight = 1080;
@@ -31,6 +45,40 @@ FoodFallDialog::FoodFallDialog(QWidget *parent) : QDialog(parent)
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setTransform(QTransform::fromScale(1, 1));
+
+//    QPalette palette;
+//    palette.setBrush(this->backgroundRole(), QBrush(QPixmap(":/ArtAssert/FoodDropGameBackground.png")));
+//    scene->setPalette(palette);
+    scene->addPixmap(QPixmap(":/ArtAssert/FoodDropGameBackground.png"));
+
+    auto foodCardSelectButton = new QToolButton();
+    foodCardSelectButton->resize(246, 96);
+    foodCardSelectButton->setIcon(QIcon(":/ArtAssert/FoodDropGame_foodCardButton.png"));
+    foodCardSelectButton->setIconSize(QSize(246, 96));
+    foodCardSelectButton->move(47, 496);
+    foodCardSelectButton->setStyleSheet("background-color: transparent;");
+
+    auto recipeCardSelectButton = new QToolButton();
+    recipeCardSelectButton->resize(246, 96);
+    recipeCardSelectButton->setIcon(QIcon(":/ArtAssert/FoodDropGame_RecipeLogoButton.png"));
+    recipeCardSelectButton->setIconSize(QSize(246, 96));
+    recipeCardSelectButton->move(47, 626);
+    recipeCardSelectButton->setStyleSheet("background-color: transparent;");
+
+    auto dishCardSelectButton = new QToolButton();
+    dishCardSelectButton->resize(246, 96);
+    dishCardSelectButton->setIcon(QIcon(":/ArtAssert/FoodDropGame_dishCardButton.png"));
+    dishCardSelectButton->setIconSize(QSize(246, 96));
+    dishCardSelectButton->move(47, 756);
+    dishCardSelectButton->setStyleSheet("background-color: transparent;");
+
+    scene->addWidget(foodCardSelectButton);
+    scene->addWidget(recipeCardSelectButton);
+    scene->addWidget(dishCardSelectButton);
+
+    connect(foodCardSelectButton, &QToolButton::clicked, this, &FoodFallDialog::foodCardMode);
+    connect(recipeCardSelectButton, &QToolButton::clicked, this, &FoodFallDialog::recipeMode);
+    connect(dishCardSelectButton, &QToolButton::clicked, this, &FoodFallDialog::dishCardMode);
 
     //    b2BodyDef groundBodyDef;
     //    float groundYPosition = (1080 - 10) / scaleFactor;
@@ -177,18 +225,42 @@ void FoodFallDialog::mousePressEvent(QMouseEvent *event)
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
     fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.3f; // 设置食物的摩擦系数
+    fixtureDef.friction = 0.3f; // 设置食物的摩擦系
     fixtureDef.restitution = 0.3f; // 设置食物的反弹系数
     body->CreateFixture(&fixtureDef);
 
     body->SetUserData((void*)2);
 
-    QPixmap pixmap(":/ArtAssert/Recipe_KungPaoChicken.png");
+    QString currPixmap = ":/ArtAssert/Recipe_KungPaoChicken.png";
+    if(currMode == 0){
+        currPixmap = randomSelectFoodCardLogo();
+    }else if(currMode == 1){
+        currPixmap = randomSelectRecipeLogo();
+    }else if(currMode == 2){
+        currPixmap = randomSelectDishCardLogo();
+    }
+
+    QPixmap pixmap(currPixmap);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
     item->setOffset(-pixmap.width() / 2, -pixmap.height() / 2);
     item->setData(0, QVariant::fromValue(static_cast<void *>(body)));
     scene->addItem(item);
     foodItems.append(item);
+}
+
+void FoodFallDialog::foodCardMode()
+{
+    currMode = 0;
+}
+
+void FoodFallDialog::recipeMode()
+{
+    currMode = 1;
+}
+
+void FoodFallDialog::dishCardMode()
+{
+    currMode = 2;
 }
 
 void FoodFallDialog::keyPressEvent(QKeyEvent *event)
@@ -210,3 +282,35 @@ void FoodFallDialog::keyReleaseEvent(QKeyEvent *event)
         moveDirection = 0;
     }
 }
+
+QString FoodFallDialog::randomSelectFoodCardLogo(){
+    int randomInt = QRandomGenerator::global()->bounded(0, foodCardPaths.size());
+    return foodCardPaths[randomInt];
+}
+
+QString FoodFallDialog::randomSelectRecipeLogo(){
+    int randomInt = QRandomGenerator::global()->bounded(1, 5);
+    if(randomInt % 4 == 0){
+        return ":/ArtAssert/Recipe_FoodDropGame.png";
+    }else if(randomInt % 3 == 0){
+        return ":/ArtAssert/Recipe_TomatoAndEggStirFry.png";
+    }else if(randomInt % 2 == 0){
+        return ":/ArtAssert/Recipe_KungPaoChicken.png";
+    }else{
+        return ":/ArtAssert/Recipe_BeefStewWithPotatoes.png";
+    }
+}
+
+QString FoodFallDialog::randomSelectDishCardLogo(){
+    int randomInt = QRandomGenerator::global()->bounded(1, 5);
+    if(randomInt % 4 == 0){
+        return ":/ArtAssert/BeefStewWithPotatoesCard.png";
+    }else if(randomInt % 3 == 0){
+        return ":/ArtAssert/TomatoAndEggStirFryCard.png";
+    }else if(randomInt % 2 == 0){
+        return ":/ArtAssert/KungPaoChickenCard.png";
+    }else{
+        return ":/ArtAssert/charredFoodCard.png";
+    }
+}
+
