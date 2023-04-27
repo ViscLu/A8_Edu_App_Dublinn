@@ -17,6 +17,7 @@
 #include <QDialog>
 #include "gamemenu.h"
 #include "foodfalldialog.h"
+#include <QtMultimedia/QMediaPlayer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CookMainGameRoom; }
@@ -44,6 +45,7 @@ private slots:
     void openGameMenu();
     void restartGameRoom();
     void enterFoodDropGameRoom();
+    void onStateChanged(QMediaPlayer::PlaybackState state);
 
 signals:
     void sendCollisionItems(QList<QString>);
@@ -73,5 +75,9 @@ private:
 
     GameMenu gameMenuWindow;
     FoodFallDialog foodFallDialogWindow;
+
+    // To implement the music play
+    QMediaPlayer* mediaPlayer;
+    QAudioOutput* outPut;
 };
 #endif // COOKMAINGAMEROOM_H

@@ -1,5 +1,6 @@
 #include "cookmaingameroom.h"
 #include "ui_cookmaingameroom.h"
+#include <QAudioOutput>
 
 CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     : QMainWindow(parent)
@@ -12,6 +13,15 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     QPixmap pixmap = QPixmap::fromImage(QImage(":/ArtAssert/EduApp_GameStartScreen.png"));
     mBackGround1.setPixmap(pixmap);
     mStartScene.addItem(&mBackGround1);
+
+    // play music when game start, set the metrix
+    mediaPlayer = new QMediaPlayer(this);
+    outPut = new QAudioOutput(this);
+    mediaPlayer->setAudioOutput(outPut);
+    mediaPlayer->setSource(QUrl("qrc:/ArtAssert/GameBackgroundMusic.wav"));
+    outPut->setVolume(100);
+    connect(mediaPlayer, &QMediaPlayer::playbackStateChanged, this, &CookMainGameRoom::onStateChanged);
+    mediaPlayer->play();
 
     auto startButton = new QPushButton();
     startButton->resize(450, 136);
@@ -128,6 +138,7 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     connect(&model, &Model::dealNewCard, this, &CookMainGameRoom::addNewCard);
     connect(&model, &Model::initRecipeStepBoard, this, &CookMainGameRoom::addNewRecipeStep);
     connect(&model, &Model::finishCurrLevel, this, &CookMainGameRoom::showDishCard);
+    connect(this, &CookMainGameRoom::resetMainGameLevel, &model, &Model::resetMainGameLevelHandler);
 
     // start card game timer
     gameLoopTimer = new QTimer(this);
@@ -228,17 +239,6 @@ void CookMainGameRoom::OpenFile(){
     emit readFileForOpen(filenames);
 }
 
-void CookMainGameRoom::backToRecipeLevelAndClearGameLevel(){
-    int foodCardsListNumber = foodCardsList.size() - 1;
-    for(int index = foodCardsListNumber; index >= 0; index--){
-        qDebug() << "check remove" << foodCardsList[index]->GetFoodCardName();
-        mMainGameScene.removeItem(foodCardsList[index]);
-        foodCardsList.pop_back();
-    }
-    ui->mGameView->setScene(&mRecipeScene);
-    emit resetMainGameLevel();
-}
-
 void CookMainGameRoom::addNewRecipeStep(QString recipeStepPixmap)
 {
     auto recipeBox = new QToolButton();
@@ -284,8 +284,28 @@ void CookMainGameRoom::restartGameRoom()
     emit restartGameRoomRequest(currRecipe);
 }
 
+void CookMainGameRoom::backToRecipeLevelAndClearGameLevel(){
+    int foodCardsListNumber = foodCardsList.size() - 1;
+    for(int index = foodCardsListNumber; index >= 0; index--){
+        qDebug() << "check remove" << foodCardsList[index]->GetFoodCardName();
+        mMainGameScene.removeItem(foodCardsList[index]);
+        foodCardsList.pop_back();
+    }
+    ui->mGameView->setScene(&mRecipeScene);
+    emit resetMainGameLevel();
+}
+
 void CookMainGameRoom::enterFoodDropGameRoom()
 {
     foodFallDialogWindow.show();
+}
+
+void CookMainGameRoom::onStateChanged(QMediaPlayer::PlaybackState state)
+{
+    if (state == QMediaPlayer::StoppedState)
+        {
+            mediaPlayer->setPosition(0);
+            mediaPlayer->play();
+       }
 }
 

@@ -71,5 +71,6 @@
         <file>FoodDropGame_dishCardButton.png</file>
         <file>FoodDropGame_foodCardButton.png</file>
         <file>FoodDropGame_RecipeLogoButton.png</file>
+        <file>GameBackgroundMusic.wav</file>
     </qresource>
 </RCC>

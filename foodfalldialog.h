@@ -38,6 +38,7 @@ private:
     QString randomSelectFoodCardLogo();
     QString randomSelectRecipeLogo();
     QString randomSelectDishCardLogo();
+    bool rectsIntersect(const QRectF &rect1, const QRectF &rect2) const;
 
 private slots:
     void updateWorld();

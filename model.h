@@ -34,6 +34,8 @@ private:
     QList<QList<QString>> foodCardsData;
     QList<QString> RecipeCookOrder;
     QList<RecipeData> recipeDataList;
+    QList<QString> condimentList;
+    QList<QString> sauceList;
     QMap<QString, RecipeData> recipeDataMap;
     QString currDishName;
     QString currDishPixmapPath;

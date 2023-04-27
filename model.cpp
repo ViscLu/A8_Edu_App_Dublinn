@@ -9,6 +9,18 @@ Model::Model(QObject *parent)
 
     stoveStepCount = 0;
     stoveErrorProcessCheck = false;
+
+    condimentList.push_back("green_onion_piecesCard");
+    condimentList.push_back("chiliCard");
+    condimentList.push_back("garlicCard");
+    condimentList.push_back("star_aniseCard");
+    condimentList.push_back("gingerCard");
+
+    sauceList.push_back("soy_sauceCard");
+    sauceList.push_back("SoyBean_sauceCard");
+    sauceList.push_back("saltCard");
+    sauceList.push_back("sugarCard");
+    sauceList.push_back("waterCard");
 }
 
 void Model::initializeFoodCard(QList<QList<QString>> foodCards, int foodCardsCount){
@@ -25,18 +37,21 @@ void Model::stoveProcessing(QString cardName)
     if(cardName == "eggCard_whisked"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("eggCard_scrambled"), ":/ArtAssert/eggCard_scrambled.png");
         cardsCount++;
+        qDebug()<< "stove check: " << stoveErrorProcessCheck;
         return;
     }
 
     if(cardName == "raw_beef_cubesCard"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("beef_cubesCard_boiled"), ":/ArtAssert/beef_cubesCard_boiled.png");
         cardsCount++;
+        qDebug()<< "stove check: " << stoveErrorProcessCheck;
         return;
     }
 
     if(cardName == "potato_dicedCard"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("potato_dicedCard_fried"), ":/ArtAssert/potato_dicedCard_fried.png");
         cardsCount++;
+        qDebug()<< "stove check: " << stoveErrorProcessCheck;
         return;
     }
 
@@ -63,17 +78,16 @@ void Model::stoveProcessing(QString cardName)
 }
 
 bool Model::sameTypefoodCheck(QString cardName){
-    if((cardName == "green_onionCard" || cardName == "gingerCard" || cardName == "chiliCard" || cardName == "garlicCard" || cardName == "star_aniseCard")
-            && (RecipeCookOrder[stoveStepCount] == "green_onionCard" || RecipeCookOrder[stoveStepCount] == "gingerCard"
-            || RecipeCookOrder[stoveStepCount] == "chiliCard" || RecipeCookOrder[stoveStepCount] == "garlicCard" || RecipeCookOrder[stoveStepCount] == "star_aniseCard")){
+    qDebug()<< "card name check: " << cardName;
+    qDebug()<< "recipe order name check: " << RecipeCookOrder[stoveStepCount];
+    if(condimentList.contains(cardName) && condimentList.contains(RecipeCookOrder[stoveStepCount])){
         return true;
     }
 
-    if((cardName == "soy_sauceCard" || cardName == "SoyBean_sauceCard" || cardName == "saltCard" || cardName == "sugarCard")
-            && (RecipeCookOrder[stoveStepCount] == "soy_sauceCard" || RecipeCookOrder[stoveStepCount] == "SoyBean_sauceCard"
-            || RecipeCookOrder[stoveStepCount] == "saltCard" || RecipeCookOrder[stoveStepCount] == "sugarCard")){
+    if(sauceList.contains(cardName) && sauceList.contains(RecipeCookOrder[stoveStepCount])){
         return true;
     }
+
     return false;
 }
 

@@ -160,6 +160,7 @@ void FoodFallDialog::updateWorld()
 {
     world->Step(timeStep, velocityIterations, positionIterations);
 
+    QRectF characterRect = characterItem->sceneBoundingRect();
     for (QGraphicsPixmapItem *item : foodItems)
     {
         b2Body *body = static_cast<b2Body *>(item->data(0).value<void *>());
@@ -170,6 +171,15 @@ void FoodFallDialog::updateWorld()
         transform.translate(position.x * scaleFactor, (1080 - position.y * scaleFactor)); // Negate the Y position to flip the coordinate
         transform.rotateRadians(angle);
         item->setTransform(transform);
+
+        QRectF foodRect = item->sceneBoundingRect();
+                if (rectsIntersect(characterRect, foodRect))
+                {
+                    // 碰撞发生
+                    b2Body *body = static_cast<b2Body *>(item->data(0).value<void *>());
+                    b2Vec2 velocity = body->GetLinearVelocity();
+                    body->SetLinearVelocity(b2Vec2(velocity.x, -velocity.y)); // 反转y速度以使食物反弹
+                }
     }
 
     if (moveDirection != 0)
@@ -281,6 +291,14 @@ void FoodFallDialog::keyReleaseEvent(QKeyEvent *event)
     {
         moveDirection = 0;
     }
+}
+
+bool FoodFallDialog::rectsIntersect(const QRectF &rect1, const QRectF &rect2) const
+{
+    return (rect1.left() < rect2.right() &&
+            rect1.right() > rect2.left() &&
+            rect1.top() < rect2.bottom() &&
+            rect1.bottom() > rect2.top());
 }
 
 QString FoodFallDialog::randomSelectFoodCardLogo(){
