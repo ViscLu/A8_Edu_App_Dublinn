@@ -10,7 +10,6 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QFileDialog>
-#include <QMap>
 
 class Model : public QObject
 {

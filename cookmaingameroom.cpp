@@ -224,7 +224,6 @@ void CookMainGameRoom::collision(){
 
 void CookMainGameRoom::OpenFile(){
     QList<QString> filenames;
-    //QString filename= QFileDialog::getOpenFileName(this, "Choose File");
 
     QString filename1 = ":/ArtAssert/recipeKungBaoChicken.txt";
     QString filename2 = ":/ArtAssert/recipeTomatoAndEggStirFry.txt";

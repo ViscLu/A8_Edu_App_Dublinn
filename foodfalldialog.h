@@ -10,6 +10,7 @@
 #include <Box2D/Box2D.h>
 #include <QToolButton>
 #include <QRandomGenerator>
+const float PIXELS_PER_METER = 100.0;
 
 class FoodFallDialog : public QDialog
 {
@@ -20,19 +21,33 @@ public:
     ~FoodFallDialog();
 
 protected:
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
 
 
 private:
-    QGraphicsScene *scene;
-    QGraphicsView *view;
-    QTimer *timer;
+
+    void createCharacter();
+    void createFood(const QPointF &position);
+
     b2World *world;
-    float scaleFactor;
-    QList<QGraphicsPixmapItem *> foodItems;
-    QGraphicsPixmapItem *characterItem;
-    int moveDirection;
+    QPixmap characterPixmap;
+    QPixmap foodPixmap;
+    b2Body *characterBody;
+    b2Body *groundBody;
+    QList<b2Body *> foodBodies;
+    bool leftPressed;
+    bool rightPressed;
+
+//    QGraphicsScene *scene;
+//    QGraphicsView *view;
+//    float scaleFactor;
+//    QList<QGraphicsPixmapItem *> foodItems;
+//    QGraphicsPixmapItem *characterItem;
+//    int moveDirection;
+
     int currMode;
     QList<QString> foodCardPaths;
     QString randomSelectFoodCardLogo();
@@ -41,16 +56,10 @@ private:
     bool rectsIntersect(const QRectF &rect1, const QRectF &rect2) const;
 
 private slots:
-    void updateWorld();
-    void mousePressEvent(QMouseEvent *event);
+    void updateScene();
     void foodCardMode();
     void recipeMode();
     void dishCardMode();
 };
 
-class CustomContactListener : public b2ContactListener
-{
-public:
-    void BeginContact(b2Contact *contact) override;
-};
 #endif // FOODFALLDIALOG_H

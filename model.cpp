@@ -33,25 +33,21 @@ void Model::initializeFoodCard(QList<QList<QString>> foodCards, int foodCardsCou
 
 void Model::stoveProcessing(QString cardName)
 {
-    qDebug()<< "order size" << RecipeCookOrder.size();
     if(cardName == "eggCard_whisked"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("eggCard_scrambled"), ":/ArtAssert/eggCard_scrambled.png");
         cardsCount++;
-        qDebug()<< "stove check: " << stoveErrorProcessCheck;
         return;
     }
 
     if(cardName == "raw_beef_cubesCard"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("beef_cubesCard_boiled"), ":/ArtAssert/beef_cubesCard_boiled.png");
         cardsCount++;
-        qDebug()<< "stove check: " << stoveErrorProcessCheck;
         return;
     }
 
     if(cardName == "potato_dicedCard"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("potato_dicedCard_fried"), ":/ArtAssert/potato_dicedCard_fried.png");
         cardsCount++;
-        qDebug()<< "stove check: " << stoveErrorProcessCheck;
         return;
     }
 
@@ -63,9 +59,6 @@ void Model::stoveProcessing(QString cardName)
         stoveStepCount++;
         stoveErrorProcessCheck = true;
     }
-
-    qDebug()<< "stove check: " << stoveErrorProcessCheck;
-    qDebug()<< "stove count check: " << stoveStepCount;
 
     if(stoveStepCount >= RecipeCookOrder.size()){
         if(stoveErrorProcessCheck == true){
@@ -143,84 +136,60 @@ void Model::checkCardCollision(QList<QString> collisionList){
 
 void Model::openGameData(QList<QString> filenames){
     for(int i = 0; i < filenames.size(); i++){
-    qDebug() <<"start check1";
-    QString fileContent;
-    QFile file(filenames[i]);
+        QString fileContent;
+        QFile file(filenames[i]);
 
-    if(!file.exists()){
-        qDebug() <<"fall exists";
-        return;
-    }
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() <<"fall";
-        return;
-    }
-
-    QTextStream in(&file);
-
-    fileContent= in.readAll();
-
-    qDebug() <<"start check2";
-
-    QJsonDocument doc= QJsonDocument::fromJson(fileContent.toUtf8());
-    QJsonObject dataobject =doc.object();
-
-    //QString tempRecipeName = dataobject["recipeName"].toString();
-    int tempCardCount = dataobject["cardCount"].toString().toInt();
-    bool tempRecipeState = dataobject["passedLevel"].toBool();
-    QString tempRecipePixmapPath = dataobject["recipePixmapPath"].toString();
-    QString tempDishCardPixmapPath = dataobject["dishCardPixmapPath"].toString();
-
-    qDebug() <<"tempCardCount: " <<tempCardCount;
-    qDebug() <<"tempRecipeState: " <<tempRecipeState;
-    qDebug() <<"tempRecipePixmapPath: " <<tempRecipePixmapPath;
-    qDebug() <<"tempDishCardPixmapPath: " <<tempDishCardPixmapPath;
-
-    QJsonArray foodCardsDataJson = dataobject["foodCardsData"].toArray();
-    QJsonArray recipeCookOrderDataJson = dataobject["recipeCookOrder"].toArray();
-
-    QList<QString> tempRecipeCookOrder;
-
-    qDebug() <<"check 3"<<tempRecipeCookOrder.size();
-
-    for (const auto& cookOrder: recipeCookOrderDataJson){
-        tempRecipeCookOrder.push_back(cookOrder.toString());
-    }
-
-    qDebug() <<"check 3";
-
-    for(int i = 0; i < tempRecipeCookOrder.size();i++){
-        qDebug() <<"recipe Cook order: " <<tempRecipeCookOrder[i];
-    }
-
-    RecipeCookOrder = tempRecipeCookOrder;
-
-    QList<QList<QString>> tempFoodCardsData;
-
-    qDebug() <<"check food cards: "<<tempFoodCardsData.size();
-
-    for (const auto& foodCardDataList: foodCardsDataJson){
-        QJsonArray foodCardData = foodCardDataList.toArray();
-        QList<QString> onefoodCardData;
-
-        for(const auto& fcData: foodCardData){
-            onefoodCardData.push_back(fcData.toString());
+        if(!file.exists()){
+            qDebug() <<"exist fall";
+            return;
         }
 
-        tempFoodCardsData.push_back(onefoodCardData);
-    }
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+            qDebug() <<"read fall";
+            return;
+        }
 
-    qDebug() <<"check 4";
+        QTextStream in(&file);
 
-    for(int i = 0; i < tempFoodCardsData.size();i++){
-        qDebug() <<"food cards Data: " <<tempFoodCardsData[i][0] << "and" << tempFoodCardsData[i][1];
-    }
+        fileContent= in.readAll();
 
-    RecipeData KongBaoChichen(tempFoodCardsData, tempRecipeCookOrder, tempCardCount, tempRecipePixmapPath, tempDishCardPixmapPath, tempRecipeState);
-    recipeDataList.push_back(KongBaoChichen);
+        QJsonDocument doc= QJsonDocument::fromJson(fileContent.toUtf8());
+        QJsonObject dataobject =doc.object();
 
-    file.close();
+        int tempCardCount = dataobject["cardCount"].toString().toInt();
+        bool tempRecipeState = dataobject["passedLevel"].toBool();
+        QString tempRecipePixmapPath = dataobject["recipePixmapPath"].toString();
+        QString tempDishCardPixmapPath = dataobject["dishCardPixmapPath"].toString();
+
+        QJsonArray foodCardsDataJson = dataobject["foodCardsData"].toArray();
+        QJsonArray recipeCookOrderDataJson = dataobject["recipeCookOrder"].toArray();
+
+        QList<QString> tempRecipeCookOrder;
+
+
+        for (const auto& cookOrder: recipeCookOrderDataJson){
+            tempRecipeCookOrder.push_back(cookOrder.toString());
+        }
+
+        RecipeCookOrder = tempRecipeCookOrder;
+
+        QList<QList<QString>> tempFoodCardsData;
+
+        for (const auto& foodCardDataList: foodCardsDataJson){
+            QJsonArray foodCardData = foodCardDataList.toArray();
+            QList<QString> onefoodCardData;
+
+            for(const auto& fcData: foodCardData){
+                onefoodCardData.push_back(fcData.toString());
+            }
+
+            tempFoodCardsData.push_back(onefoodCardData);
+        }
+
+        RecipeData KongBaoChichen(tempFoodCardsData, tempRecipeCookOrder, tempCardCount, tempRecipePixmapPath, tempDishCardPixmapPath, tempRecipeState);
+        recipeDataList.push_back(KongBaoChichen);
+
+        file.close();
     }
 }
 
@@ -240,15 +209,6 @@ void Model::initMainGameRoomBaseOnSelectedRecipe(QString recipeName){
     int cardCount = currentRecipe.getCardCount();
     currRecipeStepBoard = currentRecipe.getRecipePixmapPath();
     currDishPixmapPath = currentRecipe.getDishCardPixmapPath();
-    qDebug() <<"currDishPixmapPath: " <<currDishPixmapPath;
-
-    for(int i = 0; i < RecipeCookOrder.size();i++){
-        qDebug() <<"recipe Cook order: " <<RecipeCookOrder[i];
-    }
-
-    for(int i = 0; i < foodCardsData.size();i++){
-        qDebug() <<"food cards Data: " << foodCardsData[i][0] << "and" << foodCardsData[i][1];
-    }
 
     initializeFoodCard(foodCardsData,cardCount);
     emit initRecipeStepBoard(currRecipeStepBoard);
@@ -261,8 +221,6 @@ void Model::restartGameRoomHandler()
     stoveErrorProcessCheck = false;
     int cardCount = foodCardsData.size();
     initializeFoodCard(foodCardsData,cardCount);
-    qDebug() << "check recipeCookOrder size: " << RecipeCookOrder.size();
-    qDebug() << "check foodCardsData size: " << foodCardsData.size();
 }
 
 void Model::resetMainGameLevelHandler()
