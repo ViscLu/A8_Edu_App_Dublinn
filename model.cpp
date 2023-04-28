@@ -1,5 +1,12 @@
+/*
+ *  @author: Jiahua Zhao, Chnegyu Yang and Yitong Lu
+ *  @course: CS3505
+ *  @Assignment: A8-An-Educational-App
+ *  @Description: This class provides low-level logic for initializing game data and cards.
+*/
 #include "model.h"
 
+// Build a model that stores game data.
 Model::Model(QObject *parent)
     : QObject{parent}
 {
@@ -23,6 +30,7 @@ Model::Model(QObject *parent)
     sauceList.push_back("waterCard");
 }
 
+// This method initializes a food card and sets the properties of the food card.
 void Model::initializeFoodCard(QList<QList<QString>> foodCards, int foodCardsCount){
     for(int i = 0; i < foodCardsCount; i++){
         QList<QString> foodCardInfo = foodCards[i];
@@ -31,6 +39,7 @@ void Model::initializeFoodCard(QList<QList<QString>> foodCards, int foodCardsCou
     }
 }
 
+// This is a function in the "void" (return type) of a class named "Model" which takes a QString argument named "cardName". The purpose of this function seems to be the processing of a stove in a cooking game.
 void Model::stoveProcessing(QString cardName)
 {
     if(cardName == "eggCard_whisked"){
@@ -70,6 +79,7 @@ void Model::stoveProcessing(QString cardName)
     }
 }
 
+// This function checks whether the given card name matches the type of food required by the recipe at the current step in the stove process. It returns a boolean value indicating whether the given card belongs to the same category of food as the required recipe item.
 bool Model::sameTypefoodCheck(QString cardName){
     qDebug()<< "card name check: " << cardName;
     qDebug()<< "recipe order name check: " << RecipeCookOrder[stoveStepCount];
@@ -84,6 +94,7 @@ bool Model::sameTypefoodCheck(QString cardName){
     return false;
 }
 
+// This method represents how a sink handles an ingredient card.
 void Model::sinkProcessing(QString cardName){
     if(cardName == "raw_chickenCard"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("raw_chickenCard_water"), ":/ArtAssert/raw_chickenCard_water.png");
@@ -102,6 +113,7 @@ void Model::sinkProcessing(QString cardName){
     }
 }
 
+// This method represents how a cutting Board handles an ingredient card.
 void Model::cuttingBoardProcessing(QString cardName){
     if(cardName == "raw_chickenCard" || cardName == "raw_chickenCard_water"){
         emit dealNewCard(QPoint(cardXInitPos+100*cardsCount, cardYInitPos), QString("raw_chicken_brisketsCard"), ":/ArtAssert/raw_chicken_brisketsCard.png");
@@ -120,6 +132,7 @@ void Model::cuttingBoardProcessing(QString cardName){
     }
 }
 
+// This function checks for card collisions with different areas, such as the prep sink, stove, or cutting board, and performs the corresponding action based on the type of area and the card that collided with it.
 void Model::checkCardCollision(QList<QString> collisionList){
     QString areaType = collisionList[0];
     QString cardName = collisionList[1];
@@ -134,6 +147,7 @@ void Model::checkCardCollision(QList<QString> collisionList){
     }
 }
 
+// This function opens and reads game data files in JSON format, and updates the recipeDataList with the game data. It takes in a list of file names as input.
 void Model::openGameData(QList<QString> filenames){
     for(int i = 0; i < filenames.size(); i++){
         QString fileContent;
@@ -193,6 +207,7 @@ void Model::openGameData(QList<QString> filenames){
     }
 }
 
+// This function initializes the main game room based on the selected recipe. The input parameter is the name of the selected recipe. It then maps the recipe name to an index in the recipeDataList and retrieves the corresponding RecipeData object.
 void Model::initMainGameRoomBaseOnSelectedRecipe(QString recipeName){
     int index = 0;
     if(recipeName == "KungBaoChicken"){
@@ -214,6 +229,7 @@ void Model::initMainGameRoomBaseOnSelectedRecipe(QString recipeName){
     emit initRecipeStepBoard(currRecipeStepBoard);
 }
 
+// This function is a handler for restarting the game room. It resets the values of cardsCount, stoveStepCount, and stoveErrorProcessCheck to their initial values. It then calls the initializeFoodCard function to reset the food cards on the game board to their initial positions.
 void Model::restartGameRoomHandler()
 {
     cardsCount = 0;
@@ -223,6 +239,7 @@ void Model::restartGameRoomHandler()
     initializeFoodCard(foodCardsData,cardCount);
 }
 
+// This function is responsible for resetting the main game level. It sets the cardsCount, stoveStepCount, and stoveErrorProcessCheck variables to their initial values. It also clears the foodCardsData and RecipeCookOrder variables.
 void Model::resetMainGameLevelHandler()
 {
     cardsCount = 0;

@@ -1,3 +1,9 @@
+/*
+ *  @author: Jiahua Zhao, Chnegyu Yang and Yitong Lu
+ *  @course: CS3505
+ *  @Assignment: A8-An-Educational-App
+ *  @Description: This is the main window of our project, it will generate the music play and the connect the signal and handler.
+*/
 #ifndef COOKMAINGAMEROOM_H
 #define COOKMAINGAMEROOM_H
 

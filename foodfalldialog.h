@@ -1,3 +1,9 @@
+/*
+ *  @author: Jiahua Zhao, Chnegyu Yang and Yitong Lu
+ *  @course: CS3505
+ *  @Assignment: A8-An-Educational-App
+ *  @Description: This is the class for setting and adjusting the built-in Box2D mini-game. This class is responsible for providing Objects that can be instantiated and used for dropping ingredients.
+*/
 #ifndef FOODFALLDIALOG_H
 #define FOODFALLDIALOG_H
 
@@ -9,6 +15,7 @@
 #include <Box2D/Box2D.h>
 #include <QToolButton>
 #include <QRandomGenerator>
+
 class FoodFallDialog : public QDialog
 {
     Q_OBJECT

@@ -1,3 +1,9 @@
+/*
+ *  @author: Jiahua Zhao, Chnegyu Yang and Yitong Lu
+ *  @course: CS3505
+ *  @Assignment: A8-An-Educational-App
+ *  @Description: This is the main window of our project, it will generate the music play and the connect the signal and handler.
+*/
 #include "cookmaingameroom.h"
 #include "ui_cookmaingameroom.h"
 #include <QAudioOutput>
@@ -8,12 +14,6 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
 {
     ui->setupUi(this);
 
-    // game start screen
-    mStartScene.setSceneRect(QRect(0,0,1920, 1080));  // set QGraphicsScene size
-    QPixmap pixmap = QPixmap::fromImage(QImage(":/ArtAssert/EduApp_GameStartScreen.png"));
-    mBackGround1.setPixmap(pixmap);
-    mStartScene.addItem(&mBackGround1);
-
     // play music when game start, set the metrix
     mediaPlayer = new QMediaPlayer(this);
     outPut = new QAudioOutput(this);
@@ -22,6 +22,12 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     outPut->setVolume(100);
     connect(mediaPlayer, &QMediaPlayer::playbackStateChanged, this, &CookMainGameRoom::onStateChanged);
     mediaPlayer->play();
+
+    // game start screen
+    mStartScene.setSceneRect(QRect(0,0,1920, 1080));  // set QGraphicsScene size
+    QPixmap pixmap = QPixmap::fromImage(QImage(":/ArtAssert/EduApp_GameStartScreen.png"));
+    mBackGround1.setPixmap(pixmap);
+    mStartScene.addItem(&mBackGround1);
 
     auto startButton = new QPushButton();
     startButton->resize(450, 136);
@@ -118,6 +124,7 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     mMainGameScene.addWidget(cardBox);
     mMainGameScene.addWidget(openMenuLogo);
 
+
     connect(openMenuLogo, &QPushButton::clicked, this, &CookMainGameRoom::openGameMenu);
     connect(&gameMenuWindow, &GameMenu::restartMainGameRoom, this, &CookMainGameRoom::restartGameRoom);
     connect(&gameMenuWindow, &GameMenu::backToRecipeLevel, this, &CookMainGameRoom::backToRecipeLevelAndClearGameLevel);
@@ -150,31 +157,37 @@ CookMainGameRoom::CookMainGameRoom(Model& model, QWidget *parent)
     ui->mGameView->setParent(this);
 }
 
+// Deconstructor the ui
 CookMainGameRoom::~CookMainGameRoom()
 {
     delete ui;
 }
 
+// check whether the card is collision with the sink, pot and bord etc while the time is out
 void CookMainGameRoom::checkCollision(){
     collision();
 }
 
+// When the user clicks to start the game, he enters the menu selection page
 void CookMainGameRoom::enterRecipeLevel(){
     ui->mGameView->setScene(&mRecipeScene);
 }
 
+// When the user clicks Kung Pao Chicken, they enter the level of Kung Pao Chicken.
 void CookMainGameRoom::enterMainGameLevelKungBaoChicken(){
     currRecipe = "KungBaoChicken";
     ui->mGameView->setScene(&mMainGameScene);
     emit setupMainGameLevel("currRecipe");
 }
 
+// When the user clicks Tomato And Egg Stir Fry, they enter the level of Tomato And Egg Stir Fry.
 void CookMainGameRoom::enterMainGameLevelTomatoAndEggStirFry(){
     currRecipe = "TomatoAndEggStirFry";
     ui->mGameView->setScene(&mMainGameScene);
     emit setupMainGameLevel("TomatoAndEggStirFry");
 }
 
+// When the user clicks Beef Stew With Potatoes, they enter the level of Beef Stew With Potatoes.
 void CookMainGameRoom::enterMainGameLevelBeefStewWithPotatoes()
 {
     currRecipe = "BeefStewWithPotatoes";
@@ -182,6 +195,7 @@ void CookMainGameRoom::enterMainGameLevelBeefStewWithPotatoes()
     emit setupMainGameLevel("BeefStewWithPotatoes");
 }
 
+// When the user deals with a card, they get a brand new card based on how the user dealt with it.
 void CookMainGameRoom::addNewCard(QPoint pos, QString foodName, QString path){
     if(pos.x()> 1666){
         int initX = 266;
@@ -198,6 +212,7 @@ void CookMainGameRoom::addNewCard(QPoint pos, QString foodName, QString path){
     }
 }
 
+// Check whether the card collides with the special tool. If there is a collision, different tools will be used for different processing. If there is no collision, the card position will return to the original position.
 void CookMainGameRoom::collision(){
     bool checkRemoveCard = false;
     for(int j = 0; j < foodCardsList.size(); j++){
@@ -211,7 +226,6 @@ void CookMainGameRoom::collision(){
                     mMainGameScene.removeItem(foodCardsList[j]);
                     foodCardsList.removeOne(foodCardsList[j]);
                     checkRemoveCard = true;
-                    //delete foodCardsList[j];
                     break;
                 }
             }
@@ -222,6 +236,7 @@ void CookMainGameRoom::collision(){
     }
 }
 
+// Open the level design data of different levels and perform different initializations.
 void CookMainGameRoom::OpenFile(){
     QList<QString> filenames;
 
@@ -238,6 +253,7 @@ void CookMainGameRoom::OpenFile(){
     emit readFileForOpen(filenames);
 }
 
+// Add a menu that prompts the user to operate in the game interface.
 void CookMainGameRoom::addNewRecipeStep(QString recipeStepPixmap)
 {
     auto recipeBox = new QToolButton();
@@ -250,6 +266,7 @@ void CookMainGameRoom::addNewRecipeStep(QString recipeStepPixmap)
     mMainGameScene.addWidget(recipeBox);
 }
 
+// Display ingredient cards in an orderly manner to the user.
 void CookMainGameRoom::showDishCard(QString dishPixmapPath){
     auto newDishCard = new QPushButton();
     newDishCard->resize(349, 492);
@@ -264,11 +281,13 @@ void CookMainGameRoom::showDishCard(QString dishPixmapPath){
     connect(newDishCard, &QPushButton::clicked, newDishCard, &QPushButton::close);
 }
 
+// Opening the game menu provides options for restarting, continuing and returning to the original screen.
 void CookMainGameRoom::openGameMenu()
 {
     gameMenuWindow.show();
 }
 
+// Restart the level being played and initialize all game level data.
 void CookMainGameRoom::restartGameRoom()
 {
     qDebug() << "check foodcardList size: " << foodCardsList.size();
@@ -283,6 +302,7 @@ void CookMainGameRoom::restartGameRoom()
     emit restartGameRoomRequest(currRecipe);
 }
 
+// Go back to the selection interface of the recipe level and discard the data of the ongoing game.
 void CookMainGameRoom::backToRecipeLevelAndClearGameLevel(){
     int foodCardsListNumber = foodCardsList.size() - 1;
     for(int index = foodCardsListNumber; index >= 0; index--){
@@ -294,11 +314,13 @@ void CookMainGameRoom::backToRecipeLevelAndClearGameLevel(){
     emit resetMainGameLevel();
 }
 
+// Get into how to showcase Box2D's built-in card drop minigame.
 void CookMainGameRoom::enterFoodDropGameRoom()
 {
     foodFallDialogWindow.show();
 }
 
+// If the music playback ends, then the background music is played again.
 void CookMainGameRoom::onStateChanged(QMediaPlayer::PlaybackState state)
 {
     if (state == QMediaPlayer::StoppedState)

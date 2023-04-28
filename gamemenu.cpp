@@ -1,6 +1,13 @@
+/*
+ *  @author: Jiahua Zhao, Chnegyu Yang and Yitong Lu
+ *  @course: CS3505
+ *  @Assignment: A8-An-Educational-App
+ *  @Description: This class generates a small menu that is presented to the user.
+*/
 #include "gamemenu.h"
 #include "ui_gamemenu.h"
 
+// Defines and sets up a small menu instance.
 GameMenu::GameMenu(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GameMenu)
@@ -36,20 +43,24 @@ GameMenu::GameMenu(QWidget *parent) :
     connect(ui->recipeButton, &QPushButton::clicked, this, &GameMenu::recipeButtonHandler);
 }
 
+// Dconstructor of the menu
 GameMenu::~GameMenu()
 {
     delete ui;
 }
 
+// When the user clicks the restart button, handle this signal to send a signal to the main window interface.
 void GameMenu::restartButtonHandler(){
     this->hide();
     emit restartMainGameRoom();
 }
 
+// When the user clicks the back button, handle this signal to send a signal to the main window interface.
 void GameMenu::backButtonHandler(){
     this->hide();
 }
 
+// When the user clicks the continue button, handle this signal to send a signal to the main window interface.
 void GameMenu::recipeButtonHandler()
 {
     this->hide();

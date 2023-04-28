@@ -1,3 +1,9 @@
+/*
+ *  @author: Jiahua Zhao, Chnegyu Yang and Yitong Lu
+ *  @course: CS3505
+ *  @Assignment: A8-An-Educational-App
+ *  @Description: This class generates a small menu that is presented to the user.
+*/
 #ifndef GAMEMENU_H
 #define GAMEMENU_H
 
